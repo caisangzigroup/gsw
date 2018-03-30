@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$config['base_url'] = 'http://www.gsw.cc/';
+$config['base_url'] = 'http://www.gsw.co/';
 $config['index_page'] = '';
 $config['uri_protocol']	= 'PATH_INFO';
 $config['url_suffix'] = '';
