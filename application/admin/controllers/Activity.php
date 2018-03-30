@@ -11,6 +11,8 @@ class activity extends MY_Controller
 	public function list_activities()
 	{
 		$data['title'] = "活动列表";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$this->load->view('activity/list_activities.html',$data);
 	}
@@ -20,6 +22,10 @@ class activity extends MY_Controller
 	{
 		$data['title'] = "增加活动";
 		$data['action'] = "add_activity";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+
 		$this->load->view('activity/activity.html',$data);
 	}
 
@@ -32,6 +38,10 @@ class activity extends MY_Controller
 	{
 		$data['title'] = "更新活动";
 		$data['action'] = "update_activity";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+		
 		$this->load->view('activity/activity.html',$data);
 	}
 

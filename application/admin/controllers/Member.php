@@ -13,6 +13,8 @@ class Member extends MY_Controller
 	public function list_members($page=1)
 	{
 		$data['title'] = "会员列表";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$page_size = 20;
 		$total = $this->db->count_all('members');
@@ -34,6 +36,8 @@ class Member extends MY_Controller
 	{
 		$data['title'] 	= "增加会员";
 		$data['action'] = "add_member";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$data['fields'] = $this->db->where('model','member')->order_by('orders DESC')->get('fields')->result_array();
 
@@ -54,6 +58,8 @@ class Member extends MY_Controller
 		
 		$data['title'] = "更新会员信息";
 		$data['action'] = "update_member";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$id = !empty($id) ? intval($id) : exit('param id error');
 

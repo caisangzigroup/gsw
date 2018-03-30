@@ -13,6 +13,8 @@ class Setting extends MY_Controller
 	{
 
 		$data['title'] = 'CAI程序设置';
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$config_web = $this->db->select('config')->where('module','web')->get('setting')->row_array();
 		$data['config_web'] = unserialize($config_web['config']);

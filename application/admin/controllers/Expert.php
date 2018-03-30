@@ -13,6 +13,8 @@ class Expert extends MY_Controller
 	public function list_experts()
 	{
 		$data['title'] = "专家列表";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$this->load->view('expert/list_experts.html',$data);
 	}
@@ -20,8 +22,13 @@ class Expert extends MY_Controller
 
 	public function add_expert_tpl()
 	{
+
 		$data['title'] = "增加专家";
 		$data['action'] = "add_expert";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+
 		$this->load->view('expert/expert.html',$data);
 	}
 
@@ -34,6 +41,10 @@ class Expert extends MY_Controller
 	{
 		$data['title'] = "更新专家";
 		$data['action'] = "update_expert";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+		
 		$this->load->view('expert/expert.html',$data);
 	}
 

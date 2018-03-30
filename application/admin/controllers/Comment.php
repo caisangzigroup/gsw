@@ -11,6 +11,8 @@ class Comment extends MY_Controller
 	public function list_comments($page=1)
 	{
 		$data['title'] = '用户评论列表';
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$page_size = 20;
 		$total = $this->db->count_all_results('comments');
@@ -89,6 +91,9 @@ class Comment extends MY_Controller
 	public function setting()
 	{
 		$data['title'] = '评论设置';
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+		
 
 		$config = $this->db->where('module','comment')->get('setting')->row_array();
 		$data['config'] = unserialize($config['config']);

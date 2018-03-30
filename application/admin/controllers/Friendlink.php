@@ -13,6 +13,8 @@ class Friendlink extends MY_Controller
 	public function index( $page = 1 )
 	{
 		$data['title'] = "友情链接管理";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$page_size = 10;
 		$total = $this->db->count_all('friendlinks');
@@ -29,6 +31,8 @@ class Friendlink extends MY_Controller
 	{
 		$data['title'] = "增加友情链接";
 		$data['action'] = "add";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$this->load->view("friendlink/links.html",$data);
 	}
@@ -57,6 +61,8 @@ class Friendlink extends MY_Controller
 
 		$data['title'] = "修改友情链接";
 		$data['action'] = "update";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$data['link'] = $this->db->where('id',$id)->get('friendlinks')->row_array();
 

@@ -11,6 +11,8 @@ class Guestbook extends MY_Controller
 	public function index($page=1)
 	{
 		$data['title'] = "留言板";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$page_size = 10;
 		$total = $this->db->count_all('guestbook');
@@ -41,11 +43,11 @@ class Guestbook extends MY_Controller
 
 	public function reply_tpl($id)
 	{
+		$data['title'] = "回复留言";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$id = isset($id) ? intval($id) : exit('id error');
-
-		$data['title'] = "回复留言";
-
 		$data['guestbook'] = $this->db->where('id',$id)->get('guestbook')->row_array();
 
 		$data['action'] = 'update';

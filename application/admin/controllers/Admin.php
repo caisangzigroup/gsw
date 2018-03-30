@@ -13,6 +13,8 @@ class Admin extends MY_Controller
 	public function index()
 	{
 		$data['title'] = "管理后台";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$data['articles'] = $this->db->order_by('id DESC')->limit(5)->get('articles')->result_array(); //文章数量
 		$data['article_nums'] = $this->db->count_all_results('articles');
@@ -32,6 +34,8 @@ class Admin extends MY_Controller
 	{
 
 		$data['title'] = '搜索结果';
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$keywords = $this->input->get('keywords');
 		$data['keywords'] = $keywords;
