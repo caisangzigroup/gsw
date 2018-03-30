@@ -13,6 +13,10 @@ class User extends MY_Controller
 	public function list_users()
 	{
 		$data['title'] = "管理员列表";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+
 		$data['users'] = $this->User_model->getAll();
 		$this->load->view("user/list_users.html",$data);
 	}
@@ -21,6 +25,10 @@ class User extends MY_Controller
 	{
 		$data['title'] = "添加管理员";
 		$data['action'] = "add_user";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+
 		$this->load->view("user/user.html",$data);
 	}
 
@@ -44,6 +52,10 @@ class User extends MY_Controller
 	public function update_user_tpl($id)
 	{
 		$data['title'] = "修改管理员信息";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+		
 		$id = !empty($id) ? intval($id) : exit('param id error');
 		$data['id'] = $id;
 		$data['action'] = "update_user";

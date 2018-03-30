@@ -12,6 +12,8 @@ class Single extends MY_Controller
 	public function list_singles()
 	{
 		$data['title'] = '单页设置';
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$page = isset($page) ? $page : 1;
 		$page_size = 10;
@@ -30,7 +32,11 @@ class Single extends MY_Controller
 	public function add_tpl()
 	{
 		$data['title'] = '新增单页';
-		$data['action'] = 'add';	
+		$data['action'] = 'add';
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+
 		$this->load->view('single/single.html',$data);
 	}
 
@@ -76,6 +82,10 @@ class Single extends MY_Controller
 	{
 		$data['title'] = '修改单页';
 		$data['action'] = 'update';	
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+		
 		$this->db->select('singles.*,singles_data.body');
 		$this->db->from('singles');
 		$this->db->join('singles_data','singles.id=singles_data.single_id','left');

@@ -13,6 +13,8 @@ class Industry extends MY_Controller
 	public function list_cates()
 	{
 		$data['title'] = "行业分类列表";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 
 		$this->load->view('industry/list_cates.html',$data);
@@ -23,6 +25,8 @@ class Industry extends MY_Controller
 	{
 		$data['title'] = "增加行业分类";
 		$data['action'] = "add_cate";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$this->load->view('industry/cate.html',$data);
 	}

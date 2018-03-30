@@ -11,6 +11,8 @@ class Cases extends MY_Controller
 	public function list_cases()
 	{
 		$data['title'] = "案例列表";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		$this->load->view('case/list_cases.html',$data);
 	}
@@ -20,6 +22,10 @@ class Cases extends MY_Controller
 	{
 		$data['title'] = "增加案例";
 		$data['action'] = "add_case";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+
 		$this->load->view('case/case.html',$data);
 	}
 
@@ -32,6 +38,10 @@ class Cases extends MY_Controller
 	{
 		$data['title'] = "更新案例";
 		$data['action'] = "update_case";
+		$article_cates = $this->db->get('article_cates')->result_array();
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
+
+		
 		$this->load->view('case/case.html',$data);
 	}
 
