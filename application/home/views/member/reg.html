@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="<?php echo base_url();?>"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title><?php echo $title."_".$config_web['title']; ?></title>
+    <?php $this->load->view("layout/js.html"); ?>
+</head>
+<style type="text/css">
+.login-panel {
+    margin-top: 25%;
+}
+
+.left {
+    float: left;
+}
+
+.op {
+    margin: 5px 0;
+}
+
+.right {
+    float: right;
+}
+</style>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><?php echo $title; ?></h3>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="电子邮箱" id="email" type="email" required autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="密码" id="pass1" type="password" >
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="确认密码" id="pass2" type="password" >
+                                </div>
+                                <div class="form-group input-group">
+                                    <input class="form-control" placeholder="4位数字验证码" id="captcha" type="text" required autofocus>
+                                    <div class="input-group-addon" style="padding:0;" id="cap"></div>
+                                </div>
+                                <div class="clearfix op">
+                                    <div class="left">
+                                        <a href="javascript:alert('暂未开通');">手机登录</a>
+                                    </div>
+                                    <div class="right">
+                                        <a href="home/login/">已有账号？</a>
+                                    </div>
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <a href="javascript:;" class="btn btn-lg btn-success btn-block" id="sb">注册</a>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+        $.get("home/captcha/",{},function(data){
+            $("#cap").html(data);
+            $("#cap").click(function(){
+                $.get("home/captcha/",{},function(data){
+                    $("#cap").html(data);
+                })
+            });
+        });
+
+
+        $('#sb').click(function(){
+            // alert('pengmeiyang');
+            var email       = $("#email").val();
+            var pass1       = $("#pass1").val();
+            var pass2       = $("#pass2").val();
+            var captcha     = $("#captcha").val();
+
+            // var myReg = /^[a-zA-Z0-9_]{0,}$/;  
+            // if ( username == '' || username.length < 6 || username.length > 20 || !myReg.test(username) ){
+            //     alert('用户名不合法');
+            //     $("#name").focus();
+            //     return false;
+            // }
+
+            var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+            if ( !reg.test(email) ){
+                alert('邮箱名称不合法');
+                $("#email").focus();
+                return false;
+            }
+
+            if ( pass1 == '' ){
+                alert('密码不能为空');
+                $("#pass1").focus();
+                return false;
+            }else{
+                if ( pass1 != pass2 ){
+                    alert('两次输入的密码不一致');
+                    $("#pass1").focus();
+                    return false;
+                }
+            }
+
+            if ( captcha == '' ){
+                alert('请输入验证码');
+                $("#captcha").focus();
+                return false;
+            }
+
+
+
+            $.post("home/reg/",{email:email,password:pass1,captcha:captcha},function(data){
+                if ( data == '1' ){
+                    console.log(data);
+                    window.location.href = "member/";
+                }else{
+                    console.log(data);
+                    alert(data);
+                }
+            })
+        });
+
+    })
+    </script>
+
+</body>
+
+</html>

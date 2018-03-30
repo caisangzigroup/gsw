@@ -1,0 +1,183 @@
+<div class="navbar-default sidebar" role="navigation">
+    <div class="sidebar-nav navbar-collapse collapse">
+        <ul class="nav" id="side-menu">
+            <li class="sidebar-search">
+                <form action="admin.php/admin/search/" id="srh_form">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" id="keywords" name="keywords" value="<?php echo isset($keywords) ? $keywords : ''; ?>" placeholder="用户名/邮箱/电话/标题">
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" id="srh" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    </span>
+                </div>
+                </form>
+                
+                <!-- /input-group -->
+            </li>
+            <li>
+                <a href="admin.php"><i class="fa fa-dashboard fa-fw"></i> 管理中心</a>
+            </li>
+            <li>
+                <a href="admin.php/menu/"><i class="fa fa-th-list fa-fw"></i> 网站导航</a>
+            </li>
+            <li>
+                <a href="javascript:;"><i class="fa fa-files-o fa-fw"></i> 网站文章<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="javascript:;"> 文章列表<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li>
+                                <a href="admin.php/site/list_articles/">所有文章</a>
+                            </li>
+                            
+                            <?php if ( count($article_cates) != 0 ): ?>
+                            <?php foreach ($article_cates as $k => $v): ?>
+                            <li>
+                                <a href="admin.php/site/list_articles/<?php echo $v['id'] ?>/"><?php echo $v['name']; ?></a>
+                            </li>    
+                            <?php endforeach ?>    
+                            <?php endif ?>
+                            
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="admin.php/site/list_article_cates"> 文章分类</a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li>
+                <a href="javascript:;"><i class="fa fa-sitemap fa-fw"></i> 行业分类<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/industry/list_cates"> 所有分类</a>
+                    </li>
+                    <li>
+                        <a href="admin.php/industry/add_cate_tpl"> 添加分类</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+
+
+            <li>
+                <a href="javascript:;"><i class="fa fa-sitemap fa-fw"></i> 会员系统<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/member/list_members/"> 会员列表</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+
+            <li>
+                <a href="javascript:;"><i class="fa fa-sitemap fa-fw"></i> 专家系统<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/expert/list_experts/"> 专家列表</a>
+                    </li>
+                    <li>
+                        <a href="admin.php/expert/add_expert_tpl/"> 增加专家</a>
+                    </li>
+                    
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+
+            <li>
+                <a href="javascript:;"><i class="fa fa-sitemap fa-fw"></i> 服务案例<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/cases/list_cases/"> 案例列表</a>
+                    </li>
+                    <li>
+                        <a href="admin.php/cases/add_case_tpl/"> 增加案例</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+
+            <li>
+                <a href="javascript:;"><i class="fa fa-sitemap fa-fw"></i> 沙龙活动<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/activity/list_activities/"> 活动列表</a>
+                    </li>
+                    <li>
+                        <a href="admin.php/activity/add_activity_tpl/"> 增加活动</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+
+            <li>
+                <a href="javascript:;"><i class="fa fa-file-text-o fa-fw"></i> 单页<span class="fa arrow"></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/single/list_singles"> 单页列表</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;"><i class="fa fa-comment fa-fw"></i> 网站评论<span class="fa arrow"></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/comment/list_comments"> 评论列表</a>
+                    </li>
+                    <li>
+                        <a href="admin.php/comment/setting"> 评论设置</a>
+                    </li>
+                </ul>
+                
+            </li>
+            <li>
+                <a href="javascript:;"><i class="fa fa-envelope-o fa-fw"></i> 留言板<span class="fa arrow"></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/guestbook/"> 留言列表</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;"><i class="fa fa-user fa-fw"></i> 管理员<span class="fa arrow"></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/user/list_users"> 管理员列表</a>
+                    </li>
+                    <li>
+                        <a href="admin.php/user/add_user_tpl"> 添加管理员</a>
+                    </li>
+                </ul>
+            </li>
+
+            
+            
+
+            <li>
+                <a href="javascript:;"><i class="fa fa-sitemap fa-fw"></i> 友情链接<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/friendlink/"> 友情链接</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+
+            <li>
+                <a href="javascript:;"><i class="fa fa-gear fa-fw"></i> 设置<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="admin.php/setting/">系统设置</a>
+                    </li>
+                    <li>
+                        <a href="admin.php/admin/logout/">登出</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+        </ul>
+    </div>
+    <!-- /.sidebar-collapse -->
+</div>

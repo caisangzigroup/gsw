@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <base href="<?php echo base_url();?>"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><?php echo $title; ?></title>
+    <?php $this->load->view('layout/js.html'); ?>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <?php $this->load->view('layout/nav.html'); ?>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><?php echo $title; ?></h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <?php echo $title; ?>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>分类名称</label>
+                                            <input class="form-control" id="name" value="<?php echo isset($cate['name']) ? $cate['name'] : ''; ?>" >
+                                        </div>
+                                        <?php $cate['pid'] = isset($cate['pid']) ? $cate['pid'] : '' ?>
+                                        <div class="form-group">
+                                            <label>父类选择</label>
+                                            <select class="form-control" name="pid" id="pid">
+                                                <option value="0" <?php if ( $cate['pid'] == 0 ) echo "selected"; ?> >顶级分类</option>
+                                                <?php foreach ($article_cates as $k => $v): ?>
+                                                <option value="<?php echo $v['id']; ?>" <?php if ( $cate['pid'] == $v['id'] ) echo "selected"; ?> >
+                                                    <?php for ($i=1; $i <= $v['lev']; $i++) { echo "--"; } ?>
+                                                    <?php echo $v['name']; ?>
+                                                </option>     
+                                                
+                                                   
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>描述</label>
+                                            <textarea class="form-control" rows="3" id="des"><?php echo isset($cate['des']) ? $cate['des'] : ''; ?></textarea>
+                                        </div>
+                                        
+                                        <button type="button" class="btn btn-primary" id="sb"><?php if ( $action == 'add_article_cate' ) { echo "增加分类"; } elseif ( $action == "update_article_cate" ) { echo "修改分类"; } else { echo "error"; } ?></button>
+                                        <button type="button" class="btn btn-default" onclick="javascript:window.history.go(-1);">返回</button>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+
+    <script>
+    $(function() {
+
+      $("#sb").click(function(){
+        
+        var name        = $("#name").val();
+        var des         = $("#des").val();
+        var pid         = $("#pid").val();
+        <?php $cid = isset($cate['id']) ? $cate['id'] : ''; ?>
+        $.ajax({
+          type: "POST",
+          url: "admin.php/site/<?php echo $action; ?>/<?php echo $cid; ?>",
+          data: {name:name,des:des,pid:pid},
+          success: function(data){
+              // alert(data);
+              if ( data == '1' ){
+                alert('操作成功');
+                window.location.href = "admin.php/site/list_article_cates";
+              }else{
+                alert('操作失败');
+                parent.location.reload();  
+              }
+          }
+        })
+      })
+
+    });
+    </script>
+
+</body>
+
+</html>

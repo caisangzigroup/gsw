@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <base href="<?php echo base_url();?>"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="soft.caisangzi.com">
+
+    <title><?php echo $title; ?></title>
+
+    <?php $this->load->view('layout/js.html'); ?>
+
+    <link rel="stylesheet" type="text/css" href="css/admin/admin.css">
+
+</head>
+<style type="text/css">
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+
+td a {
+    display: inline-block;
+}
+</style>
+<body>
+
+    <div id="wrapper">
+
+        <?php $this->load->view('layout/nav.html'); ?>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">网站留言</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <div class="left"><?php echo $title; ?></div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form id="fm">
+                            <div class="table-responsive">
+                                <table width="100%" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="checkall">&nbsp;#</th>
+                                            <th>标题</th>
+                                            <th>内容</th>
+                                            <th>留言时间</th>
+                                            <th>是否回复</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if ( count($guestbooks) == 0 ): ?>
+                                        <tr>
+                                            <td colspan="6">没有网站留言。</td>
+                                        </tr>    
+                                        <?php else: ?>
+                                        <?php foreach ($guestbooks as $k => $v): ?>
+                                        <tr class="gradeA even">
+                                            <td class="center">
+                                                <input type="checkbox" name="ids[]" value="<?php echo $v['id']; ?>">&nbsp;<?php echo $v['id']; ?>
+                                            </td>
+                                            <td>
+                                                <a href="" target="_blank"><?php echo $v['title'] ?></a>
+                                            </td>
+                                            <td title="<?php echo $v['content']; ?>">
+                                                <?php echo isset($v['content']) ? mb_substr($v['content'],0,200) : '暂无'; ?>
+                                            </td>
+                                            <td><?php echo date('Y-m-d H:i:s',$v['updatetime']); ?></td>
+                                            <td title="<?php echo $v['reply']; ?>">
+                                            <?php 
+                                            if ( empty($v['reply']) )
+                                            {
+                                                echo "未回复";
+                                            }
+                                            else
+                                            {
+                                                echo mb_substr($v['reply'],0,200);
+                                            }  
+                                            ?>
+                                            </td>
+                                            
+                                            <td class="center">
+                                                <a href="admin.php/guestbook/reply_tpl/<?php echo $v['id']; ?>">回复</a>
+                                                <a href="javascript:;" onclick="javascript:del(<?php echo $v['id']; ?>);">删除</a>
+                                            </td>
+                                        </tr>    
+                                        <?php endforeach ?>    
+                                        <?php endif ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- /.table-responsive -->
+                            
+                            <div class="row">
+                                
+                                <div class="col-sm-6">
+                                    <?php echo $this->pagination->create_links(); ?>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="oprate">
+                                        <button class="btn btn-primary" type="button" id="del">批量删除</button>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                          
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+           
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- DataTables JavaScript -->
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+
+        window.del = function( id ){
+            if ( confirm("确定要删除数据么？") ){
+                var ids = id + ",";
+                $.get("admin.php/guestbook/delete/",{ids:ids},function(data){
+                    console.log(data);
+                    if ( data == 1 ){
+                        alert('操作成功');
+                        parent.location.reload();
+                    }else{
+                        alert('操作失败');
+                        parent.location.reload();
+                    }
+                });
+            }
+        }
+
+        window.reply = function( id ){
+
+            var ids = id + ",";
+            $.get("admin.php/guestbook/reply/",{ids:ids},function(data){
+                console.log(data);
+                if ( data == 1 ){
+                    alert('操作成功');
+                    parent.location.reload();
+                }else{
+                    alert('操作失败');
+                    parent.location.reload();
+                }
+            });
+
+        }
+
+
+        $("#fm").on("change","#checkall",function(){
+            if(this.checked){
+                $("input[name='ids[]']").prop('checked', true);
+            }else{
+                $("input[name='ids[]").prop('checked', false);
+            }
+        });
+        var str_chk = '';
+        $("#del").click(function(){
+            if ( confirm("确定要删除数据么？") ){
+                $("input[name='ids[]']").each(function(){
+                    if ( $(this).is(':checked') ) {
+                        // console.log();
+                        str_chk = $(this).val() + "," + str_chk;
+                    };
+                    console.log(str_chk);
+                })
+                if ( str_chk == '' ) {
+                    alert('请选择数据');
+                    return false;
+                } else {
+
+                    $.get("admin.php/guestbook/delete/",{ids:str_chk},function(data){
+                        if ( data == 1 ){
+                            alert('操作成功');
+                            parent.location.reload();
+                        }else{
+                            alert('操作失败');
+                            parent.location.reload();  
+                        }
+                    });
+                }
+            }
+
+        });
+
+
+    });
+    </script>
+
+</body>
+
+</html>

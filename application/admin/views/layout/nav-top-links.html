@@ -1,0 +1,26 @@
+<ul class="nav navbar-top-links navbar-right">
+    <?php //$this->load->view('layout/nav-msg.html'); ?>
+    <!-- /.dropdown -->
+    <?php //$this->load->view('layout/nav-task.html'); ?>
+    <!-- /.dropdown -->
+    <?php //$this->load->view('layout/nav-info.html'); ?>
+    <!-- /.dropdown -->
+    <li>
+        <a href="/" target="_blank">网站首页</a>
+    </li>
+    <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+            <li>
+                <a href="admin.php/user/update_user_tpl/<?php echo $_SESSION['user']['uid']; ?>"><i class="fa fa-user fa-fw"></i>  <?php echo $_SESSION['user']['username']; ?></a>
+            </li>
+            <li class="divider"></li>
+            <li><a href="admin.php/admin/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+            </li>
+        </ul>
+        <!-- /.dropdown-user -->
+    </li>
+    <!-- /.dropdown -->
+</ul>

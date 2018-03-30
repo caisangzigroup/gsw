@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <base href="<?php echo base_url();?>"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><?php echo $title; ?></title>
+    <?php $this->load->view('layout/js.html'); ?>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <?php $this->load->view('layout/nav.html'); ?>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><?php echo $title; ?></h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">评论设置</div>
+                        <div class="panel-body">
+                            
+                            <form role="form" id="form_comment">
+
+                                <div class="form-group">
+                                    <label>是否显示</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="comment_show" value="1" <?php if ( $config['show'] == 1 ) echo 'checked'; ?> >显示
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="comment_show" value="0" <?php if ( $config['show'] != 1 ) echo 'checked'; ?>>不显示
+                                    </label>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>是否审核</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="comment_status" value="1" <?php if ( $config['status'] == 1 ) echo 'checked'; ?>>审核
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="comment_status" value="0" <?php if ( $config['status'] != 1 ) echo 'checked'; ?>>不审核
+                                    </label>
+                                </div>
+
+                        		<div class="form-group">
+                                    <label>发布评论</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="comment_member_can" value="1" <?php if ( $config['member_can'] == 1 ) echo 'checked'; ?> >仅会员
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="comment_member_can" value="0" <?php if ( $config['member_can'] != 1 ) echo 'checked'; ?>>都可以
+                                    </label>
+                                </div>
+
+                                <button type="button" class="btn btn-primary" id="sb5">修改配置</button>
+                               
+                            </form>
+
+                        </div>
+                    </div>
+                </div>   
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+
+    <!-- include summernote css/js-->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.4/summernote.js"></script>
+
+    <script type="text/javascript" src="js/jquery.ajaxfileupload.js"></script>
+    <script>
+    $(function() {
+
+        $("#sb5").click(function(){
+
+            var comment_show        = $("[name='comment_show']:checked").val();
+            var comment_status      = $("[name='comment_status']:checked").val();
+            var comment_member_can  = $("[name='comment_member_can']:checked").val();
+
+            
+            // alert(title);
+            console.log(comment_member_can + comment_status + comment_show);
+            $.ajax({
+              type: "POST",
+              url: "admin.php/setting/update/5/",
+              data: {comment_show:comment_show,comment_status:comment_status,comment_member_can:comment_member_can},
+              success: function(data){
+                    // alert(data);
+                    console.log(data);
+                    if ( data == '1' ){
+                        alert('操作成功');
+                        window.location.href = "admin.php/comment/setting/";
+                    }else{
+                        alert('操作失败');
+                        parent.location.reload();  
+                    }
+                }
+            })
+        });
+
+        
+       
+
+    });
+    </script>
+
+</body>
+
+</html>

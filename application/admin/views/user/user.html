@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <base href="<?php echo base_url();?>"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><?php echo $title; ?></title>
+    <?php $this->load->view('layout/js.html'); ?>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <?php $this->load->view('layout/nav.html'); ?>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><?php echo $title; ?></h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <?php echo $title; ?>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>登录名称</label>
+                                            <input class="form-control" id="username" type="text"  <?php if ( $action == 'add_user' ){ echo ''; } elseif ( $action == 'update_user' ) { echo 'disabled'; }  ?> value="<?php echo isset($user['username']) ? $user['username'] : ''; ?>" placeholder="填写登录名称">
+                                        </div>
+
+                                        <?php if ( $action == 'update_user' ): ?>
+                                        <div class="form-group">
+                                            <label>登录密码</label>
+                                            <input class="form-control" id="password" value="" placeholder="请输入登录密码">
+                                            <p class="help-block">留空代表不修改</p>
+                                        </div>    
+                                        <?php endif ?>
+                                        
+                                        <div class="form-group">
+                                            <label>新密码</label>
+                                            <input class="form-control" id="password1" value="" placeholder="请输入新密码">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>重复密码</label>
+                                            <input class="form-control" id="password2" value="" placeholder="请再次输入新密码">
+                                        </div>
+
+                                        <button type="button" class="btn btn-primary" id="sb"><?php if ( $action == 'add_user' ) { echo "增加管理员"; } elseif ( $action == "update_user" ) { echo "修改信息"; } else { echo "error"; } ?></button>
+                                        <button type="button" class="btn btn-default" onclick="javascript:window.history.go(-1);">返回</button>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+
+    <script>
+    $(function() {
+
+    $("#sb").click(function(){
+        
+        var username    = $("#username").val();
+        var pass        = $("#password").val();
+        var pass1       = $("#password1").val();
+        var pass2       = $("#password2").val();
+
+        if ( pass1 == '' ){
+            alert('新密码不能为空');
+            return false;
+        }
+
+        if ( pass1 != pass2 ){
+            alert('两次输入的密码不一致');
+            return false;
+        }
+
+        <?php $id = isset($id) ? $id : ''; ?>
+        $.ajax({
+          type: "POST",
+          url: "admin.php/user/<?php echo $action; ?>/<?php echo $id; ?>",
+          data: {password:pass,password1:pass1,password2:pass2,username:username},
+          success: function(data){
+              if ( data == '1' ){
+                alert('操作成功');
+                window.location.href = "admin.php/user/list_users/";
+              }else{
+                alert(data);
+                parent.location.reload();  
+              }
+          }
+        })
+      })
+
+    });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <base href="<?php echo base_url();?>"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="soft.caisangzi.com">
+
+    <title><?php echo $title; ?></title>
+
+    <?php $this->load->view('layout/js.html'); ?>
+
+    <link rel="stylesheet" type="text/css" href="css/admin/admin.css">
+
+</head>
+<style type="text/css">
+.left {
+    float: left;
+}
+.right {
+    float: right;
+}
+
+.oprate select {
+    display: inline-block;
+    width: 30%;
+}
+</style>
+<body>
+
+    <div id="wrapper">
+
+        <?php $this->load->view('layout/nav.html'); ?>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">网站设置</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <div class="left">搜索到以下用户</div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                           
+                            <div class="table-responsive">
+                                <table width="100%" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="checkall">&nbsp;#</th>
+                                            <th>用户名</th>
+                                            <th>邮箱名</th>
+                                            <th>电话号码</th>
+                                            <th>最后登录</th>
+                                            <th>状态</th>
+                                            <th>激活</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <?php if ( count($members) == 0 ): ?>
+                                        <tr>
+                                            <td colspan="8">暂无查询结果。</td>
+                                        </tr>
+                                        <?php else: ?>
+                                        <?php foreach ($members as $k => $v): ?>
+                                        <tr class="gradeA even">
+                                            <td class="center">
+                                                <input type="checkbox" name="ids[]" value="<?php echo $v['id']; ?>">&nbsp;<?php echo $v['id']; ?>
+                                            </td>
+                                            <td>
+                                                <a href="" target="_blank"><?php echo $v['name'] ?></a>
+                                            </td>
+                                            <td>
+                                                <a href="" target="_blank"><?php echo $v['email'] ?></a>
+                                            </td>
+                                            <td><?php echo $v['phone'] ?></td>
+                                            <td><?php echo date('Y-m-d H:i:s',$v['lastlogintime']); ?></td>
+                                            <td>
+                                                <?php 
+                                                if ( $v['status'] == 1 ){ echo "<span class='text-success'>正常</span>";}
+                                                elseif ( $v['status'] == 0 ){ echo "<span>待审核</span>"; }
+                                                elseif ( $v['status'] == 2 ){ echo "<span class='text-danger'>封号</span>"; }
+                                                else{ echo "<span class='text-warning'>异常</span>"; }
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php 
+                                                if ( $v['active'] == 1 ){ echo "<span class='text-success'>正常</span>";}
+                                                elseif ( $v['active'] == 0 ){ echo "<span class='text-danger'>未激活</span>"; }
+                                                else{ echo "<span class='text-warning'>异常</span>"; }
+                                                ?>
+                                            </td>
+                                            <td class="center">
+                                                <a href="admin.php/member/update_member_tpl/<?php echo $v['id']; ?>">修改</a>&nbsp;
+                                                <a href="javascript:reset_password(<?php echo $v['id']; ?>);">重置密码</a>&nbsp;
+                                                <a href="javascript:;" onclick="javascript:forbid(<?php echo $v['id']; ?>);">禁用</a>
+                                            </td>
+                                        </tr>    
+                                        <?php endforeach ?>
+                                        <?php endif ?>
+
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- /.table-responsive -->
+                            
+                            
+
+                          
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <div class="left">搜索到以下文章</div>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                           
+                            <div class="table-responsive">
+                                <table width="100%" class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="checkall">&nbsp;#</th>
+                                            <th>标题</th>
+                                            <th>作者</th>
+                                            <th>发布时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <?php if ( count($articles) == 0 ): ?>
+                                        <tr>
+                                            <td colspan="8">暂无查询结果。</td>
+                                        </tr>
+                                        <?php else: ?>
+                                        <?php foreach ($articles as $k => $v): ?>
+                                        <tr class="gradeA even">
+                                            <td class="center">
+                                                <input type="checkbox" name="ids[]" value="<?php echo $v['id']; ?>">&nbsp;<?php echo $v['id']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $v['title']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $v['author']; ?>
+                                            </td>
+                                            <td>
+                                                <?php echo date('Y-m-d H:i:s',$v['createtime']); ?>
+                                            </td>
+                                            
+                                            <td class="center">
+                                                <a href="admin.php/site/update_article_tpl/<?php echo $v['id']; ?>">修改</a>&nbsp;
+                                                <a href="javascript:del(<?php echo $v['id']; ?>);">删除</a>&nbsp;
+                                                
+                                            </td>
+                                        </tr>    
+                                        <?php endforeach ?>
+                                        <?php endif ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- /.table-responsive -->
+                            
+                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+           
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- DataTables JavaScript -->
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function(){
+        window.reset_password = function( id ){
+            if ( confirm("确定要重置密码么？") ){
+                $.get("admin.php/member/reset_password/",{id:id},function(data){
+                    console.log(data);
+                    if ( data == 1 ){
+                        alert('操作成功');
+                        parent.location.reload();
+                    }else{
+                        alert('操作失败');
+                        parent.location.reload();
+                    }
+                });
+            }
+        }
+
+        window.forbid = function( id ){
+            $.get("admin.php/member/forbid_member/",{id:id},function(data){
+                console.log(data);
+                if ( data == 1 ){
+                    alert('操作成功');
+                    parent.location.reload();
+                }else{
+                    alert('操作失败');
+                    parent.location.reload();
+                }
+            });
+        }
+
+        window.del = function( id ){
+            if ( confirm("确定要删除数据么？") ){
+                var ids = id + ",";
+                $.get("admin.php/site/delete_articles/",{ids:ids},function(data){
+                    console.log(data);
+                    if ( data == 1 ){
+                        alert('操作成功');
+                        parent.location.reload();
+                    }else{
+                        alert('操作失败');
+                        parent.location.reload();
+                    }
+                });
+            }
+        }
+    });
+    </script>
+
+</body>
+
+</html>

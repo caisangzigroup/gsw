@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<base href="<?php echo base_url();?>"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="HandheldFriendly" content="True">
+	<title><?php echo $article['title']."_".$config_web['title']; ?></title>
+	<meta name="description" content="<?php echo $article['des']; ?>">
+	<meta name="keywords" content="<?php echo $article['keywords']; ?>">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/9.0.0/styles/vs.min.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+	
+	<?php $this->load->view("layout/header.html"); ?>
+
+	<?php $this->load->view("layout/nav-menu.html"); ?>
+	<section>
+		<div class="container">
+			<div class="row">
+				<main class="col-md-8 main-content">
+
+					
+					<article>
+						<div class="article-head">
+							<h3><?php echo $article['title']; ?></h3>
+							<div class="mata">
+								<span class="author">
+									作者：<a href="javascript:;"><?php echo $article['author']; ?></a>
+								</span>
+								<time><?php echo date('Y-m-d',$article['createtime']); ?></time>
+							</div>
+						</div>
+						<div class="featured-media">
+							<a href="javascript:;"><img src="<?php echo $article['pic']; ?>" alt="<?php echo $article['title']; ?>"></a>
+						</div>
+						<div class="article-content">
+							<?php echo $article['body']; ?>
+						</div>
+						
+						<footer class="article-footer clearfix"></footer>
+					</article>	
+
+					<?php if ( $config_comment['show'] == 1 ): ?>
+					<!-- comment -->
+					<div class="comment">
+						<div class="comment-post clearfix">
+							<form id="form_comment" class="clearfix">
+								<div>
+
+									<?php if ( $member['is_login'] == 1 ): ?>
+									<a href="member/"><?php echo $member['nickname']; ?></a>	
+									<?php else: ?>
+									<a href="home/login/" class="ajax-login">会员登录</a>	
+									<?php endif ?>
+									
+								</div>
+								<textarea class="form-control" rows="3"></textarea>
+								<input type="hidden" value="0">
+								<button class="btn btn-default btn-xs" id="post-comment" type="button">评论</button>
+							</form>
+						</div>
+
+						<?php if ( $comment_nums != 0 ): ?>
+						
+						<div class="comment-list">
+							<?php foreach ($comments as $k => $v): ?>
+							<div class="content row">
+								<div class="headpic col-md-1 col-xs-2">
+									<img src="<?php echo $v['headimgurl']; ?>">
+								</div>
+								<div class='con col-md-11 col-xs-10'>
+									<div class="member-info">
+										<span class="member-name">
+											<a href="javascript:;"><?php echo $v['nickname'] ?></a>
+										</span>
+										<span class="member-level"><i>冒泡</i></span>
+										<span class="right"><?php echo date('Y-m-d,H:i:s',$v['createtime']); ?></span>
+									</div>
+									
+									<div class="member-content">
+										<?php if ( !empty($v['reply_id']) ): ?>
+										<div class="last-comment">
+											<div class="member-info">
+												<span class="member-name">
+													<a href="javascript:;"><?php echo isset($v['add']['nickname']) ? $v['add']['nickname'] : ''; ?></a>
+												</span>
+												<span class="member-level"><i>冒泡</i></span>
+												<span class="right"><?php echo isset($v['add']['createtime']) ? date('Y-m-d,H:i:s',$v['add']['createtime']) : ''; ?></span>
+											</div>
+											<?php echo isset($v['add']['content']) ? $v['add']['content'] : ''; ?>
+										</div>	
+										<?php endif ?>
+										
+										<?php echo $v['content']; ?>
+										
+									</div>
+
+									<div class="op">
+										<span><a href="jvascript:;" class="reply">回复</a></span>
+										<span>
+											<a href="javascript:;"><i class="fa fa-heart-o fa-fw"></i></a>
+										</span>
+									</div>
+
+									<div class="module-post clearfix">
+										<form>
+											<textarea class="form-control" rows="3"></textarea>
+											<input type="hidden" value="<?php echo $v['id']; ?>">
+											<button class="btn btn-default btn-xs post-comment" type="button">评论</button>
+										</form>
+									</div>
+
+
+
+								</div>
+
+							</div>		
+							<?php endforeach ?>
+
+						</div>	
+						<?php endif ?>
+						
+					</div>
+					<!-- comment end -->	
+					<?php endif ?>
+					
+
+					<div class="prev-next-wrap clearfix">
+
+						<?php if ( $article_prev ): ?>
+						<a class="btn btn-default" href="article/show/<?php echo $article_prev['id']; ?>">
+							<i class="fa fa-angle-left fa-fw"></i><?php echo $article_prev['title'] ?>
+						</a> 
+						<?php endif ?>
+						&nbsp;	
+						<?php if ( $article_next ): ?>
+						<a class="btn btn-default" href="article/show/<?php echo $article_next['id']; ?>"><?php echo $article_next['title'] ?>
+							<i class="fa fa-angle-right fa-fw"></i>
+						</a>	
+						<?php endif ?>
+						
+					</div>
+				</main>
+				
+				<?php $this->load->view("layout/aside.html"); ?>
+
+			</div>
+		</div>
+	</section>
+	
+	<?php $this->load->view("layout/foot.html"); ?>
+
+	<?php $this->load->view("layout/copyright.html"); ?>
+
+	<a href="#" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+
+
+	<?php $str_status = ( $config_comment['status'] == 1 ) ? ',请等待管理员审核' : ''; ?>
+	<!-- javascript	 -->
+	<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="http://cdn.bootcss.com/fitvids/1.1.0/jquery.fitvids.min.js"></script>
+	<script src="http://cdn.bootcss.com/highlight.js/9.0.0/highlight.min.js"></script>
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$(window).scroll(function() {
+            $(this).scrollTop() > 100 ? $("#back-to-top").fadeIn() : $("#back-to-top").fadeOut()
+        });
+        $("#back-to-top").on("click",function(e){
+            return e.preventDefault(),
+            $("html, body").animate({scrollTop: 0},1e3),!1;
+        });
+
+        $(".reply").click(function(){
+        	var that = $(this).parents(".con");
+        	that.find(".module-post").toggle("slow");
+        	
+        });
+
+        $("#post-comment,.post-comment").click(function(){
+
+        	var con = $(this).siblings("textarea").val();
+        	if ( con == '' ){
+        		alert('评论内容不能为空');
+        		return false;
+        	}
+        	var aid = <?php echo $article['id']; ?>;
+        	var reply_id = $(this).siblings("input[type='hidden']").val();
+        	$.post("/comment/post/",{aid:aid,con:con,reply_id:reply_id},function(data){
+        		console.log(data);
+        		if ( data == 1 ){
+        			alert("评论成功<?php echo $str_status; ?>");
+        			parent.location.reload();
+        		}else{
+        			alert(data);
+        			parent.location.reload();
+        		}
+        	});
+
+        });
+
+	})
+	</script>
+
+</body>
+</html>

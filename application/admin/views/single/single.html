@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <base href="<?php echo base_url();?>"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><?php echo $title; ?></title>
+    <?php $this->load->view('layout/js.html'); ?>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <?php $this->load->view('layout/nav.html'); ?>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><?php echo $title; ?></h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <?php echo $title; ?>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form" enctype="multipart/form-data">
+                                        <div class="form-group">
+                                            <label>标题</label>
+                                            <input class="form-control" id="title" value="<?php echo isset($single['title']) ? $single['title'] : ''; ?>" >
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>作者</label>
+                                            <input class="form-control" id="author" value="<?php echo isset($single['author']) ? $single['author'] : ''; ?>" >
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>菜单显示</label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="is_menu" value="1" <?php if ( $single['is_menu'] =='1' ) echo "checked"; ?> >显示
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="is_menu" value="0" <?php if ( $single['is_menu'] =='0' ) echo "checked"; ?> >不显示
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>单页缩略图</label>
+                                            <input type="file" class="form-control" name="apic" id="upload" style="margin-bottom:5px;">
+                                            <input type="text" class="form-control" id="pic_url" value="<?php echo isset($single['pic']) ? $single['pic'] : ''; ?>" placeholder="暂无">
+                                            <img src="<?php echo isset($single['pic']) ? $single['pic'] : ''; ?>" class="img-responsive pic" >
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>内容</label>
+                                            <textarea class="form-control" rows="8" id="body"><?php echo isset($single['body']) ? $single['body'] : ''; ?></textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>关键字</label>
+                                            <input class="form-control" id="single_keywords" value="<?php echo isset($single['keywords']) ? $single['keywords'] : ''; ?>">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>描述</label>
+                                            <textarea class="form-control" rows="3" id="des"><?php echo isset($single['des']) ? $single['des'] : ''; ?></textarea>
+                                        </div>
+                                        
+                                        <button type="button" class="btn btn-primary" id="sb"><?php if ( $action == 'add' ) { echo "增加单页"; } elseif ( $action == "update" ) { echo "修改单页"; } else { echo "error"; } ?></button>
+                                        <button type="button" class="btn btn-default" onclick="javascript:window.history.go(-1);">返回</button>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+
+    <!-- include summernote css/js-->
+    <link href="summernote/summernote.css" rel="stylesheet">
+    <script src="summernote/summernote.js"></script>
+
+    <script type="text/javascript" src="js/jquery.ajaxfileupload.js"></script>
+    <script>
+    $(function() {
+
+        $('#body').summernote({
+            height: 400,  
+            lang: 'zh-CN',  
+            focus:true,  
+            callbacks: {  
+                onImageUpload: function(files, editor, $editable) {  
+                    sendFile(files);  
+                }  
+            }  
+        });
+
+        var interval;
+        function applyAjaxFileUpload(element) {
+            $(element).AjaxFileUpload({
+                action: "admin.php/upload/upload_picture_article/",
+                onChange: function(filename) {
+                    // Create a span element to notify the user of an upload in progress
+                    var $span = $("<span />")
+                        .attr("class", $(this).attr("id"))
+                        .text("Uploading")
+                        .insertAfter($(this));
+
+                    $(this).remove();
+
+                    interval = window.setInterval(function() {
+                        var text = $span.text();
+                        if (text.length < 13) {
+                            $span.text(text + ".");
+                        } else {
+                            $span.text("Uploading");
+                        }
+                    }, 200);
+                },
+                onSubmit: function(filename) {
+                    return true;
+                },
+                onComplete: function(filename, response) {
+                    window.clearInterval(interval);
+                    console.log(response.url);
+                    var $span = $("span." + $(this).attr("id")).text(filename + " "),
+                        $fileInput = $("<input />")
+                            .attr({
+                                type: "file",
+                                name: $(this).attr("name"),
+                                id: $(this).attr("id")
+                            });
+
+                    if (typeof(response.error) === "string") {
+                        $span.replaceWith($fileInput);
+
+                        applyAjaxFileUpload($fileInput);
+
+                        alert(response.error);
+
+                        return;
+                    }else{
+                        $("#pic_url").val(response.url);
+                        $(".pic").attr('src',response.url)
+                    }
+
+                    $("<a />")
+                        .attr("href", "admin.php/single/add_tpl")
+                        .text("x")
+                        .bind("click", function(e) {
+                            $span.replaceWith($fileInput);
+
+                            applyAjaxFileUpload($fileInput);
+                        })
+                        .appendTo($span);
+
+
+                }
+            });
+        }
+
+        applyAjaxFileUpload("#upload");
+
+        $("#sb").click(function(){
+        
+            var body        = $("#body").val();
+            var title       = $("#title").val();
+            var keywords    = $("#single_keywords").val();
+            var des         = $("#des").val();
+            var pic_url     = $("#pic_url").val();
+            var author      = $("#author").val();
+            var is_menu     = $("input[name='is_menu']:checked").val();
+            console.log(title+body+keywords+des+author+is_menu);
+            <?php $single_id = isset($single['id']) ? $single['id'] : ''; ?>
+            $.ajax({
+              type: "POST",
+              url: "admin.php/single/<?php echo $action; ?>/<?php echo $single_id; ?>",
+              data: {body:body,title:title,keywords:keywords,des:des,pic_url:pic_url,author:author,is_menu:is_menu},
+              success: function(data){
+                    // alert(data);
+                    console.log(data);
+                    if ( data == '1' ){
+                        alert('操作成功');
+                        window.location.href = "admin.php/single/list_singles/";
+                    }else{
+                        alert('操作失败');
+                        parent.location.reload();  
+                    }
+                }
+            })
+        })
+
+        function sendFile(files, editor, $editable) {  
+
+            
+            var data = new FormData();  
+            // console.log(files[0]);
+            data.append("ajaxTaskFile", files[0]);  
+            // console.log(data);
+
+            $.ajax({  
+                data : data,  
+                type : "POST",  
+                url : "admin.php/upload/upload_picture/",    // 图片上传出来的url，返回的是图片上传后的路径，http格式  
+                cache : false,  
+                contentType : false,  
+                processData : false,  
+                dataType : "json",  
+                success: function(data) {//data是返回的hash,key之类的值，key是定义的文件名  
+                    // console.log(data);
+                    if ( data.error != 0 ){
+                        alert(data.error);
+                    }else{
+                        $('#body').summernote('insertImage', data.pic_url);  
+                    }
+                    
+                },  
+                error:function(){  
+                    alert("上传失败");  
+                }  
+            });  
+        } 
+
+    });
+    </script>
+
+</body>
+
+</html>

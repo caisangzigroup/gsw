@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<base href="<?php echo base_url();?>"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="HandheldFriendly" content="True">
+	<title><?php echo "访客留言板_".$config_web['title']; ?></title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/9.0.0/styles/vs.min.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<style type="text/css">
+.article-content .con {
+	font-size: 14px;
+	margin-bottom: 10px;
+}
+
+.reply {
+	font-size: 14px;
+	background: #ebebeb;
+	padding: 10px;
+}
+
+.article-head h3 {
+	margin-top: 0;
+    padding-bottom: 7px;
+    border-bottom: 1px solid #ebebeb;
+    margin-bottom: 21px;
+    position: relative;
+}
+
+.article-head .meta {
+	margin: 5% 0;
+}
+
+ul,li {
+	list-style: none;
+	margin-left: 0; 
+	padding-left: 0;
+}
+
+.article-content ul li {
+	margin-bottom: 10%;
+}
+
+</style>
+<body>
+	
+	<?php $this->load->view("layout/header.html"); ?>
+
+	<?php $this->load->view("layout/nav-menu.html"); ?>
+	<section>
+		<div class="container">
+			<div class="row">
+				<main class="col-md-8 main-content">
+
+					
+					<article>
+						<div class="article-head">
+							<h3 class="title">访客留言板</h3>	
+							<div class="meta">
+								<a class="btn btn-default" href="guestbook/#post" role="button">发布留言</a>
+							</div>				
+						</div>
+
+						
+						
+						<div class="article-content">
+							<ul>
+
+								<?php foreach ($guestbook as $k => $v): ?>
+								<li style="border-bottom:1px dashed #333; margin-bottom:5%;">
+									<h4><?php echo $v['title'] ?><?php echo !empty( $v['reply'] ) ?  "（<strong>已回复</strong>）": ""; ?></h4>
+									<div class="con">
+										<?php echo $v['content'] ?>
+									</div>
+									<?php if ( !empty($v['reply']) ): ?>
+									<div class="reply">
+										<h5>回复：</h5>
+										<?php echo $v['reply']; ?>
+									</div>	
+									<?php endif ?>
+									
+								</li>	
+								<?php endforeach ?>
+								
+
+							</ul>
+						</div>
+						
+						<footer class="article-footer clearfix" id="post">
+							<form> 
+								<div class="form-group">
+                                    <label>标题</label>
+                                    <input class="form-control" placeholder="留言的标题" id="title">
+                                </div>
+								<div class="form-group">
+                                    <label>内容补充描述</label>
+                                    <textarea class="form-control" rows="3" id="content"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>昵称</label>
+                                    <input class="form-control" placeholder="怎么称呼您" id="name">
+                                </div>
+                                <div class="form-group">
+                                    <label>联系方式</label>
+                                    <input class="form-control" id="contact" placeholder="联系方式：手机电话">
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" id="sb" type="button" value="提交">
+                                </div>
+							</form>
+						</footer>
+					</article>	
+				</main>
+				
+				<?php $this->load->view("layout/aside.html"); ?>
+
+			</div>
+		</div>
+	</section>
+	
+	<?php $this->load->view("layout/foot.html"); ?>
+
+	<?php $this->load->view("layout/copyright.html"); ?>
+
+	<a href="#" id="back-to-top" style="display: inline;"><i class="fa fa-angle-up"></i></a>
+
+
+	<!-- javascript	 -->
+	<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script src="http://cdn.bootcss.com/fitvids/1.1.0/jquery.fitvids.min.js"></script>
+	<script src="http://cdn.bootcss.com/highlight.js/9.0.0/highlight.min.js"></script>
+
+	<script type="text/javascript">
+	$(document).ready(function(){
+
+		$(window).scroll(function() {
+            $(this).scrollTop() > 100 ? $("#back-to-top").fadeIn() : $("#back-to-top").fadeOut()
+        });
+
+        $("#back-to-top").on("click",function(e){
+            return e.preventDefault(),
+            $("html, body").animate({scrollTop: 0},1e3),!1;
+        });
+
+        $("#sb").click(function(){
+        	var title = $('#title').val();
+        	var name = $('#name').val();
+        	var content = $('#content').val();
+        	var contact = $('#contact').val();
+
+        	if ( title == '' || title.length > 10 ) {
+        		alert( "标题填写非法" );
+        		$('#title').focus();
+        		return false;
+        	};
+
+        	if ( name == '' || name.length > 10 ) {
+        		alert( "昵称填写非法" );
+        		$('#name').focus();
+        		return false;
+        	};
+
+        	if ( content == '' || title.length > 400 ) {
+        		alert( "描述填写非法" );
+        		$('#content').focus();
+        		return false;
+        	};
+
+        	var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/; 
+			if(!myreg.test(contact)) 
+			{ 
+			    alert('请输入有效的手机号码！'); 
+			    return false; 
+			}
+
+        	$.post('guestbook/add/',{title:title,name:name,content:content,contact:contact},function(data){
+        		if ( data == 1 ){
+        			alert('留言成功');
+        		}else{
+        			alert(data);
+        		}
+        		parent.location.reload();
+        	})
+        });
+
+	})
+	</script>
+
+</body>
+</html>

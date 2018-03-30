@@ -1,0 +1,50 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Expert extends MY_Controller 
+{
+	public function __construct()
+	{
+		parent::__construct();
+		// $this->load->model("Member_model");
+	}
+	
+
+	public function list_experts()
+	{
+		$data['title'] = "专家列表";
+
+		$this->load->view('expert/list_experts.html',$data);
+	}
+
+
+	public function add_expert_tpl()
+	{
+		$data['title'] = "增加专家";
+		$data['action'] = "add_expert";
+		$this->load->view('expert/expert.html',$data);
+	}
+
+	public function add_expert()
+	{
+
+	}
+
+	public function update_expert_tpl()
+	{
+		$data['title'] = "更新专家";
+		$data['action'] = "update_expert";
+		$this->load->view('expert/expert.html',$data);
+	}
+
+	public function update_expert()
+	{
+
+	}
+
+	public function delete_expert()
+	{
+
+	}
+
+}

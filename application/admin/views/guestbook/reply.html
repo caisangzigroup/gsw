@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <base href="<?php echo base_url();?>"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title><?php echo $title; ?></title>
+    <?php $this->load->view('layout/js.html'); ?>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <?php $this->load->view('layout/nav.html'); ?>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header"><?php echo $title; ?></h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <?php echo $title; ?>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>留言标题[<?php echo isset( $guestbook['createtime'] ) ? date('Ymd,H:i:s',$guestbook['createtime']) : 'error'; ?>]</label>
+                                            <input class="form-control" id="title" value="<?php echo isset($guestbook['title']) ? $guestbook['title'] : ''; ?>" >
+                                        </div>
+
+                                    
+                                        <div class="form-group">
+                                            <label>留言人</label>
+                                            <input class="form-control" id="name" value="<?php echo isset($guestbook['name']) ? $guestbook['name'] : ''; ?>" >
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label>留言内容</label>
+                                            <textarea class="form-control">
+                                                <?php echo $guestbook['content']; ?>
+                                            </textarea>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>回复内容</label>
+                                            <textarea class="form-control" id="reply">
+                                                <?php echo $guestbook['reply']; ?>
+                                            </textarea>
+                                        </div>
+
+                                        
+                                        <button type="button" class="btn btn-primary" id="sb"><?php if ( $action == 'add' ) { echo "增加"; } elseif ( $action == "update" ) { echo "回复"; } else { echo "error"; } ?></button>
+                                        <button type="button" class="btn btn-default" onclick="javascript:window.history.go(-1);">返回</button>
+                                    </form>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                
+                            </div>
+                            <!-- /.row (nested) -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="vendor/metisMenu/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="dist/js/sb-admin-2.js"></script>
+
+    <!-- include summernote css/js-->
+    <link href="summernote/summernote.css" rel="stylesheet">
+    <script src="summernote/summernote.js"></script>
+
+    <script type="text/javascript" src="js/jquery.ajaxfileupload.js"></script>
+    <script>
+    $(function() {
+
+        $("#sb").click(function(){
+        
+            var reply       = $("#reply").val();
+            
+            // alert(title);
+            <?php $id = isset($guestbook['id']) ? $guestbook['id'] : ''; ?>
+            $.ajax({
+              type: "POST",
+              url: "admin.php/guestbook/<?php echo $action; ?>/<?php echo $id; ?>",
+              data: {reply:reply},
+              success: function(data){
+                    // alert(data);
+                    console.log(data);
+                    if ( data == '1' ){
+                        alert('操作成功');
+                        window.location.href = "admin.php/guestbook/";
+                    }else{
+                        alert('操作失败');
+                        parent.location.reload();  
+                    }
+                }
+            })
+        })
+
+
+
+    });
+    </script>
+
+</body>
+
+</html>

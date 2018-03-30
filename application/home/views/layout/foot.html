@@ -1,0 +1,44 @@
+<footer class="main-footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="widget">
+					<h4 class="title">最新文章</h4>
+					<div class="content recent-post">
+						<?php foreach ($articles_recent as $k => $v): ?>
+						<div class="recent-single-post">
+							<a href="article/show/<?php echo $v['id'] ?>/" class="post-title"><?php echo $v['title'] ?></a>
+							<div class="date"><?php echo date("Y年m月d日",$v['createtime']); ?></div>
+						</div>	
+						<?php endforeach ?>
+						
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="widget">
+					<h4 class="title">标签云</h4>
+					<div class="content tag-cloud">
+						<a href="javascript:;">...</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="widget">
+					<h4 class="title">友链</h4>
+					<div class="content tag-cloud friend-links">
+						<?php foreach ($friendlinks as $k => $v): ?>
+						<a href="<?php echo $v['url'] ?>" title="<?php echo $v['title'] ?>" target="_blank"><?php echo $v['title'] ?></a>
+						<?php if ( ($k + 1)%3 == 0 ): ?>
+						<hr>	
+						<?php endif ?>
+							
+						<?php endforeach ?>
+		
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
