@@ -37,7 +37,7 @@ class Industry extends MY_Controller
 	}
 
 
-	public function update_cate_tpl()
+	public function update_cate_tpl($id)
 	{
 		$data['title'] = "修改行业分类";
 		$data['action'] = "update_cate";
@@ -45,7 +45,7 @@ class Industry extends MY_Controller
 		$this->load->view('industry/cate.html',$data);
 	}
 
-	public function update_cate()
+	public function update_cate($id)
 	{
 
 	}

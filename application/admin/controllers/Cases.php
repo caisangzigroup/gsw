@@ -34,7 +34,7 @@ class Cases extends MY_Controller
 
 	}
 
-	public function update_case_tpl()
+	public function update_case_tpl($id)
 	{
 		$data['title'] = "更新案例";
 		$data['action'] = "update_case";
@@ -45,7 +45,7 @@ class Cases extends MY_Controller
 		$this->load->view('case/case.html',$data);
 	}
 
-	public function update_case()
+	public function update_case($id)
 	{
 
 	}

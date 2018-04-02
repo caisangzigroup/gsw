@@ -34,7 +34,7 @@ class activity extends MY_Controller
 
 	}
 
-	public function update_activity_tpl()
+	public function update_activity_tpl($id)
 	{
 		$data['title'] = "更新活动";
 		$data['action'] = "update_activity";
@@ -45,7 +45,7 @@ class activity extends MY_Controller
 		$this->load->view('activity/activity.html',$data);
 	}
 
-	public function update_activity()
+	public function update_activity($id)
 	{
 
 	}

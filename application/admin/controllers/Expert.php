@@ -37,7 +37,7 @@ class Expert extends MY_Controller
 
 	}
 
-	public function update_expert_tpl()
+	public function update_expert_tpl($id)
 	{
 		$data['title'] = "更新专家";
 		$data['action'] = "update_expert";
@@ -48,7 +48,7 @@ class Expert extends MY_Controller
 		$this->load->view('expert/expert.html',$data);
 	}
 
-	public function update_expert()
+	public function update_expert($id)
 	{
 
 	}
