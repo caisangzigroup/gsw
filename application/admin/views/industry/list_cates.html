@@ -47,7 +47,7 @@ td a {
                     <div class="panel panel-default">
                         <div class="panel-heading clearfix" >
                             <div class="left"><?php echo $title; ?></div>
-                            <div class="right"><a href="">添加分类</a></div>
+                            <div class="right"><a href="admin.php/industry/add_cate_tpl/">添加分类</a></div>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -64,114 +64,27 @@ td a {
                                     </thead>
                                     <tbody>
                                         
+                                        <?php foreach ($industry_cates as $k => $v): ?>
                                         <tr>
-                                            <td>1</td>
-                                            <td><a href="">数控车床</a></td>
-                                            <td>数控车床数控车床数控车床分类描述</td>
-                                            <td>2018.9.6</td>
+                                            <td><?php echo $v['id']; ?></td>
                                             <td>
-                                                <a href="admin.php/industry/update_cate_tpl/">修改</a> 
-                                                <a href="javascript:;">删除</a>
-                                                <a href="" target="">查看专家</a>
-                                                <a href="" traget="">查看文章</a>
+                                                <a href="">
+                                                <?php for ($i=0; $i < $v['lev']; $i++) { echo "--";} ?>
+                                                <?php echo $v['name']; ?>
+                                                </a>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><a href="">数控车床</a></td>
-                                            <td>数控车床数控车床数控车床分类描述</td>
-                                            <td>2018.9.6</td>
+                                            <td><?php echo isset($v['others']) ? $v['others'] : ''; ?></td>
+                                            <td><?php echo date("Y-m-d,H:i:s",$v['updatetime']); ?></td>
                                             <td>
-                                                <a href="admin.php/industry/update_cate_tpl/">修改</a> 
-                                                <a href="javascript:;">删除</a>
-                                                <a href="" target="">查看专家</a>
-                                                <a href="" traget="">查看文章</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><a href="">数控车床</a></td>
-                                            <td>数控车床数控车床数控车床分类描述</td>
-                                            <td>2018.9.6</td>
-                                            <td>
-                                                <a href="admin.php/industry/update_cate_tpl/">修改</a> 
-                                                <a href="javascript:;">删除</a>
-                                                <a href="" target="">查看专家</a>
-                                                <a href="" traget="">查看文章</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><a href="">--数控车床</a></td>
-                                            <td>数控车床数控车床数控车床分类描述</td>
-                                            <td>2018.9.6</td>
-                                            <td>
-                                                <a href="admin.php/industry/update_cate_tpl/">修改</a> 
-                                                <a href="javascript:;">删除</a>
-                                                <a href="" target="">查看专家</a>
-                                                <a href="" traget="">查看文章</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><a href="">--数控车床</a></td>
-                                            <td>数控车床数控车床数控车床分类描述</td>
-                                            <td>2018.9.6</td>
-                                            <td>
-                                                <a href="admin.php/industry/update_cate_tpl/">修改</a> 
-                                                <a href="javascript:;">删除</a>
-                                                <a href="" target="">查看专家</a>
-                                                <a href="" traget="">查看文章</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><a href="">----数控车床</a></td>
-                                            <td>数控车床数控车床数控车床分类描述</td>
-                                            <td>2018.9.6</td>
-                                            <td>
-                                                <a href="admin.php/industry/update_cate_tpl/">修改</a> 
-                                                <a href="javascript:;">删除</a>
-                                                <a href="" target="">查看专家</a>
-                                                <a href="" traget="">查看文章</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><a href="">--数控车床</a></td>
-                                            <td>数控车床数控车床数控车床分类描述</td>
-                                            <td>2018.9.6</td>
-                                            <td>
-                                                <a href="admin.php/industry/update_cate_tpl/">修改</a> 
-                                                <a href="javascript:;">删除</a>
-                                                <a href="" target="">查看专家</a>
-                                                <a href="" traget="">查看文章</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><a href="">--数控车床</a></td>
-                                            <td>数控车床数控车床数控车床分类描述</td>
-                                            <td>2018.9.6</td>
-                                            <td>
-                                                <a href="admin.php/industry/update_cate_tpl/">修改</a> 
-                                                <a href="javascript:;">删除</a>
-                                                <a href="" target="">查看专家</a>
-                                                <a href="" traget="">查看文章</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><a href="">--数控车床</a></td>
-                                            <td>数控车床数控车床数控车床分类描述</td>
-                                            <td>2018.9.6</td>
-                                            <td>
-                                                <a href="admin.php/industry/update_cate_tpl/">修改</a> 
-                                                <a href="javascript:;">删除</a>
-                                                <a href="" target="">查看专家</a>
-                                                <a href="" traget="">查看文章</a>
+                                                <a href="admin.php/industry/update_cate_tpl/<?php echo $v['id']; ?>">修改</a> 
+                                                <a href="javascript:;" onclick="javascript:del(<?php echo $v['id']; ?>);">删除</a>
+
+                                                <a href="" target="_blank">查看</a>
                                             </td>
                                         </tr>   
+                                        <?php endforeach ?>
+                                        
+                                       
                                        
                                         
                                     </tbody>
@@ -202,22 +115,24 @@ td a {
     <script src="dist/js/sb-admin-2.js"></script>
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
-    // $(document).ready(function() {
-    //     window.del = function( id ){
-    //         if ( confirm("确定要删除数据么？") ){
-    //             $.get("admin.php/site/delete_article_cate/",{id:id},function(data){
-    //                 console.log(data);
-    //                 if ( data == 1 ){
-    //                     alert('操作成功');
-    //                     parent.location.reload();
-    //                 }else{
-    //                     alert('操作失败');
-    //                     parent.location.reload();
-    //                 }
-    //             });
-    //         }
-    //     }
-    // });
+    $(document).ready(function() {
+        window.del = function( id ){
+            if ( confirm("确定要删除数据么？") ){
+                var ids = id + ",";
+                $.get("admin.php/industry/delete",{ids:ids},function(data){
+                    console.log(data);
+                    if ( data == 1 ){
+                        alert('操作成功');
+                        parent.location.reload();
+                    }else{
+                        alert('操作失败');
+                        parent.location.reload();
+                    }
+                });
+            }
+        }
+    });
+
     </script>
 
 </body>

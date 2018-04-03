@@ -49,6 +49,27 @@ class MY_Controller extends CI_Controller
 
 		$this->pagination->initialize($config);
 	}
+
+	/**
+	 * 获取子孙树
+	 * @param   array        $data   待分类的数据
+	 * @param   int/string   $id     要找的子节点id
+	 * @param   int          $lev    节点等级
+	 */
+	function getSubTree($data , $id = 0 , $lev = 0) 
+	{
+	    static $son = array();
+
+	    foreach($data as $key => $value) {
+	        if($value['pid'] == $id) {
+	            $value['lev'] = $lev;
+	            $son[] = $value;
+	            $this->getSubTree($data , $value['id'] , $lev+1);
+	        }
+	    }
+
+	    return $son;
+	 }
 }
 
  ?>

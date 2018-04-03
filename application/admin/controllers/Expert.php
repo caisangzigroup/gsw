@@ -39,9 +39,9 @@ class Expert extends MY_Controller
 
 	public function update_expert_tpl($id)
 	{
-		$data['title'] = "更新专家";
+		$data['title']  = "更新专家";
 		$data['action'] = "update_expert";
-		$article_cates = $this->db->get('article_cates')->result_array();
+		$article_cates  = $this->db->get('article_cates')->result_array();
 		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 		

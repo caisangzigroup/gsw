@@ -41,23 +41,27 @@
                                     <form role="form">
                                         <div class="form-group">
                                             <label>分类名称</label>
-                                            <input class="form-control" id="name" value="" >
+                                            <input class="form-control" id="name" value="<?php echo isset($cate['name']) ? $cate['name'] : ''; ?>" >
                                         </div>
                                         
+                                        <?php $cate['pid'] = isset($cate['pid']) ? $cate['pid'] : '' ?>
                                         <div class="form-group">
                                             <label>父类选择</label>
                                             <select class="form-control" name="pid" id="pid">
-                                                <option>分类1</option>
-                                                <option>分类1</option>
-                                                <option>分类1</option>
-                                                <option>分类1</option>
-                                                <option>分类1</option>
+                                                <option value="0" <?php if ( $cate['pid'] == 0 ) echo "selected"; ?> >顶级分类</option>
+                                                <?php foreach ($industry_cates as $k => $v): ?>
+                                                <option value="<?php echo $v['id']; ?>" <?php if ( $cate['pid'] == $v['id'] ) echo "selected"; ?> >
+                                                    <?php for ($i=1; $i <= $v['lev']; $i++) { echo "--"; } ?>
+                                                    <?php echo $v['name']; ?>
+                                                </option> 
+                                                <?php endforeach ?>
+
                                             </select>
                                         </div>
 
                                         <div class="form-group">
                                             <label>描述</label>
-                                            <textarea class="form-control" rows="3" id="des"><?php echo isset($cate['des']) ? $cate['des'] : ''; ?></textarea>
+                                            <textarea class="form-control" rows="3" id="others"><?php echo isset($cate['others']) ? $cate['others'] : ''; ?></textarea>
                                         </div>
                                         
                                         <button type="button" class="btn btn-primary" id="sb"><?php if ( $action == 'add_cate' ) { echo "增加分类"; } elseif ( $action == "update_cate" ) { echo "修改分类"; } else { echo "error"; } ?></button>
@@ -94,28 +98,31 @@
     <script>
     $(function() {
 
-      // $("#sb").click(function(){
+      $("#sb").click(function(){
+        // alert("sb");
         
-      //   var name        = $("#name").val();
-      //   var des         = $("#des").val();
-      //   var pid         = $("#pid").val();
-      //   <?php $cid = isset($cate['id']) ? $cate['id'] : ''; ?>
-      //   $.ajax({
-      //     type: "POST",
-      //     url: "admin.php/site/<?php echo $action; ?>/<?php echo $cid; ?>",
-      //     data: {name:name,des:des,pid:pid},
-      //     success: function(data){
-      //         // alert(data);
-      //         if ( data == '1' ){
-      //           alert('操作成功');
-      //           window.location.href = "admin.php/site/list_article_cates";
-      //         }else{
-      //           alert('操作失败');
-      //           parent.location.reload();  
-      //         }
-      //     }
-      //   })
-      // })
+        var name          = $("#name").val();
+        var pid           = $("#pid").val();
+        var others        = $("#others").val();
+        <?php $id = isset($cate['id']) ? $cate['id'] : ''; ?>
+        // console.log(others);
+        $.ajax({
+          type: "POST",
+          url: "admin.php/industry/<?php echo $action; ?>/<?php echo $id ?>",
+          data: {name:name,others:others,pid:pid},
+          success: function(data){
+
+              if ( data == '1' ){
+                alert('操作成功');
+                window.location.href = "admin.php/industry/list_cates";
+              }else{
+                console.log(data);
+                alert('操作失败');
+                parent.location.reload();  
+              }
+          }
+        })
+      })
 
     });
     </script>

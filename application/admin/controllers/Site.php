@@ -58,7 +58,7 @@ class Site extends MY_Controller
 		$data['title'] = "添加文章";
 		$data['action'] = 'add_article';
 		$article_cates 	= $this->db->get('article_cates')->result_array();
-		$data['article_cates'] = $this->getSubTree($article_cates);
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 
 		$this->load->view("site/article.html",$data);
@@ -86,7 +86,7 @@ class Site extends MY_Controller
 		$data['title'] = "更改文章";
 		$data['action'] 	= 'update_article';
 		$article_cates 	= $this->db->get('article_cates')->result_array();
-		$data['article_cates'] = $this->getSubTree($article_cates);
+		$data['article_cates'] = $this->Article_cate_model->getSubTree($article_cates);
 
 
 		$id = !empty($id) ? intval($id) : exit('param id error');
